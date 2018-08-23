@@ -1,0 +1,16 @@
+import React from 'react';
+import {View, Dimensions} from 'react-native';
+
+
+var {height, width} = Dimensions.get('window');
+const PageSlider = ({circleOne, circleTwo,circleThree}) => {
+    return(
+        <View style = {{width : width / 3, flexDirection : 'row', justifyContent : 'space-evenly', bottom : '10%'}}>
+            <View  style = {{width : 17, height : 17, borderRadius : 8.5, backgroundColor : circleOne}}/>
+            <View  style = {{width : 17, height : 17, borderRadius : 8.5, backgroundColor : circleTwo}}/>
+            <View  style = {{width : 17, height : 17, borderRadius : 8.5, backgroundColor : circleThree}}/>
+        </View>
+    );
+}
+
+export default PageSlider;
