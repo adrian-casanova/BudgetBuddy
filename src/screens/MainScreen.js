@@ -137,7 +137,7 @@ class MainScreen extends React.Component {
 
     render(){
         return(
-            <View style = {{height : height, width :width, backgroundColor : '#3ba357',
+            <View style = {{height : height, width :width, backgroundColor : '#2cfa7a',
             alignItems : 'center' }}>
                 
                 <View style  = {{paddingTop : Constants.statusBarHeight, width : width - 40,
@@ -155,6 +155,7 @@ class MainScreen extends React.Component {
                 alignItems : 'center'}}
                     >
                     <TextInput 
+                    underlineColorAndroid = 'transparent'
                         style = {{
                             fontSize : 24,
                             textAlign :'center',
