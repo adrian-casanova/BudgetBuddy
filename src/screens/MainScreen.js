@@ -1,8 +1,9 @@
 import React from 'react';
 import {Text,View, Dimensions, AsyncStorage,Modal, TextInput,
 TouchableOpacity} from 'react-native';
-import {Constants} from 'expo'
+import {Constants, Font} from 'expo'
 import Icons from '@expo/vector-icons/Ionicons'
+
 var {height , width} = Dimensions.get('window');
 var monthsDatabase = ['January','February','March', 'April',
 'May', 'June','July','August','September', 'October','November','December']

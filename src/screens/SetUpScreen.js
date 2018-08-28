@@ -8,7 +8,6 @@ import * as Animatable from 'react-native-animatable'
 import PageSlider from '../components/PageSlider'
 import TimeSquare from '../components/TimeSquare'
 import AddCircle from '../components/AddCircle';
-import BudgetAnimated from '../components/BudgetAnimated';
 var {height , width} = Dimensions.get('window');
 class SetUpScreen extends React.Component {
     
@@ -18,12 +17,10 @@ class SetUpScreen extends React.Component {
             setUpOne : true,
             setUpTwo : false,
             setUpThree : false,
-            setUpFour : false,
             budget : null,
             circleOne : '#6666ff',
             circleTwo : 'white',
             circleThree : 'white',
-            circleFour : 'white',
             daysLeft : null,
             month : null,
             daysInMonth : null,
@@ -219,11 +216,7 @@ async storeDailyBudget(value){
         })
     }
     onSwipeLeftThree(gestureState){
-        this.setState({
-            setUpFour : true,
-            circleThree : 'white',
-            circleFour : '#6666ff'
-        })
+        this.props.navigation.navigate('MainScreen')
     }
 
     daysInMonth(month, year){
@@ -259,9 +252,9 @@ async storeDailyBudget(value){
     }
 
     conditionalRendering(){
-        const {setUpOne, setUpTwo, setUpThree, setUpFour} = this.state;
+        const {setUpOne, setUpTwo, setUpThree} = this.state;
 
-        if(setUpOne === true && setUpTwo === false && setUpThree === false && setUpFour === false){
+        if(setUpOne === true && setUpTwo === false && setUpThree === false){
             return(
             <GestureHandler
             onSwipeLeft = {async (state) => {
@@ -292,7 +285,7 @@ async storeDailyBudget(value){
                 </GestureHandler>
             )
         }
-        else if(setUpOne === true && setUpTwo === true && setUpThree === false && setUpFour === false){
+        else if(setUpOne === true && setUpTwo === true && setUpThree === false){
             return(
                 <GestureHandler 
                 onSwipeRight = {async (state) => {
@@ -359,7 +352,7 @@ async storeDailyBudget(value){
                 </GestureHandler>
             )
         }
-        else if(setUpOne === true && setUpTwo === true && setUpThree === true && setUpFour === false){
+        else if(setUpOne === true && setUpTwo === true && setUpThree === true){
             return(
                 <GestureHandler 
                 onSwipeRight = {async (state) => {
@@ -567,38 +560,13 @@ async storeDailyBudget(value){
                
                 </GestureHandler>
             );
-        }else if (setUpOne === true && setUpTwo === true && setUpThree === true && setUpFour === true){
-            return(
-                <GestureHandler
-                    onSwipeLeft = {() => {
-                        this.props.navigation.navigate('MainScreen');
-                    }}
-                >
-                <View style ={{height : '90%', width : width- 40, paddingTop :
-                Constants.statusBarHeight, alignItems : 'center'}}>
-                    <Text style = {{
-                           top : '10%', fontSize : 38, color : 'white', fontWeight : 'bold',}}>
-                        Your daily budget for this month is
-                    </Text>
-                    <View style = {{top : '20%'}} >
-
-                    <BudgetAnimated budget = {this.state.budget}/>
-                    
-                        </View>
-
-                  
-                </View>
-                <Text 
-                    style = {{
-                        
-                        fontSize : 24, color : 'white', fontWeight : 'bold',textAlign : 'center'}}>
-                        Swipe to get started
-                    </Text>
-                </GestureHandler>
-            );
         }
 
     }
+
+
+
+
     render(){
         return(
             <View style = {{height : height, width : width,
@@ -609,7 +577,6 @@ async storeDailyBudget(value){
                 circleOne = {this.state.circleOne}
                 circleTwo = {this.state.circleTwo}
                 circleThree = {this.state.circleThree}
-                circleFour = {this.state.circleFour}
                />
                </View>
         );
