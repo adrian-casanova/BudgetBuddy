@@ -9,6 +9,7 @@ import PageSlider from '../components/PageSlider'
 import TimeSquare from '../components/TimeSquare'
 import AddCircle from '../components/AddCircle';
 import MonthlyExpenses from './MonthlyExpenses';
+import {clearKeys} from '../helpers/helpers'
 var {height , width} = Dimensions.get('window');
 class SetUpScreen extends React.Component {
     
@@ -48,9 +49,12 @@ async storeDailyBudget(value){
     }
 }
 
+
+
   async  componentWillMount() {
        await this.getDate();
-       await console.log(AsyncStorage.getAllKeys());
+       clearKeys();
+   
         // this.showNotifications();
        
         console.log(this.state.daysLeft)

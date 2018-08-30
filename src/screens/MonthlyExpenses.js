@@ -7,8 +7,10 @@ import ExpenseContainer from '../components/ExpenseContainer';
 import AddCircle from '../components/AddCircle';
 import * as Animatable from 'react-native-animatable'
 import GenExpenseContainer from '../components/GenExpenseContainer'
-
+import FormattedInput from '../components/FormattedInput'
  
+
+
 var listOfExpenses = [];
 var {height, width} = Dimensions.get('window');
 class MonthlyExpenses extends React.Component{
@@ -27,12 +29,96 @@ class MonthlyExpenses extends React.Component{
              {'Expense' : 'Gasoline'},
             {'Expense' : 'Subscriptions'}],
             expenseSelected : null,
-            expenseCost : '00.00'
+            expenseCost : '00.00',
+            keys : []
 
         }
     }
 
+   async componentWillMount(){
+        await this._retrieveAllKeys();
+    }
+
+    _retrieveAllKeys = async(key) => {
+        try{
+            let value = await AsyncStorage.getAllKeys();
+            this.setState({
+                keys : value
+            })
+            console.log(value)
+        }catch(error){
+            console.log(error)
+        }
+    }
+
+    _retrieveData = async (key) => {
+        try{
+            let value = await AsyncStorage.getItem(key)
+            if(value !== null){
+                this.setState({
+
+                })
+            }
+        }
+        catch(error){
+            console.log(error)
+        }
+    }
+
+
+
+
+    goBack() {
+        this.setState({
+            showModal : false
+        })
+    }
+
+    conditionalLoading(){
+        if(this.state.keys.length < 2){
+            return(
+                <Animatable.View 
+                animation = 'fadeIn'
+                style = {styles.ContainerStyle}>
+                    {/* <View style ={styles.AddCircleStyle}>
+                        <AddCircle />
+                    </View> */}
+                    {this.showModal()}
+                    <Text style = {styles.TextStyle}>
+                        Select Monthly Expense
+                    </Text>
+                  
+    
+                    <View style = {styles.LineView} />
+                 
+                    <FlatList
+                
+                data = {this.state.generalExpense}
+                keyExtractor = {(item, index) => item.Expense}
+                renderItem = {({item}) => (
+                   <TouchableOpacity style ={styles.ExpensesView} 
+                  
+                  
+                   onPress = {() => {
+                      
+                       this.setState({
+                           expenseSelected : item.Expense,
+                           showModal : true
+                       })
+                   }}>
+                    <GenExpenseContainer  text = {item.Expense}/>
+                    </TouchableOpacity>
+                   
+                )}
+                />
+                
+                </Animatable.View>
+            )
+        }
+    }
+
     showModal(){
+        
         return(
         <Modal
         visible = {this.state.showModal}
@@ -45,34 +131,19 @@ class MonthlyExpenses extends React.Component{
         animationType = 'slide'
         >
             <View style = {{flex : 1, backgroundColor : 'white', alignItems : 'center',
-        paddingTop : Constants.statusBarHeight}}>
-                    <GenExpenseContainer  text = {this.state.expenseSelected}/>
-                    <View style = {{top : '20%'}}>
+        paddingTop : Constants.statusBarHeight, top : '20%'}}>
+                  
+                    <View >
                         <Text style = {{fontSize : 36, color : '#2cfa7a'}}>
-                            Cost
+                            Enter Expense
                         </Text>
                     </View>
-                    <View style ={{
-                        width : width - 40,
-                        height : 50,
-                        borderWidth : 2,
-                        borderRadius : 30,
-                        justifyContent : 'center',
-                        alignItems  : 'center'
-                    }}>
-                        <TextInput 
-                        value = {this.state.expenseCost}
-                        clearTextOnFocus = {true}
-                        keyboardType = 'numeric'
-                        onChangeText ={ (text) => {
-                            
-                            this.setState({
-                                expenseCost : text
-                            })
-                        }}
-                        style = {{textAlign : 'center', fontSize : 24}}
-                        />
-                    </View>
+
+                        <FormattedInput
+                        backCirclePress = {this.goBack.bind(this)}
+                        
+                        selectedExpense = {this.state.expenseSelected} />
+
             </View>
         </Modal>
         )
@@ -80,40 +151,9 @@ class MonthlyExpenses extends React.Component{
 
     render(){
         return(
-            <Animatable.View 
-            animation = 'fadeIn'
-            style = {styles.ContainerStyle}>
-                {/* <View style ={styles.AddCircleStyle}>
-                    <AddCircle />
-                </View> */}
-                {this.showModal()}
-                <Text style = {styles.TextStyle}>
-                    Select Monthly Expense
-                </Text>
-              
-
-                <View style = {styles.LineView} />
-             
-                <FlatList
-            
-            data = {this.state.generalExpense}
-            keyExtractor = {(item, index) => item.Expense}
-            renderItem = {({item}) => (
-               <TouchableOpacity style ={styles.ExpensesView} 
-               onPress = {() => {
-                  
-                   this.setState({
-                       expenseSelected : item.Expense,
-                       showModal : true
-                   })
-               }}>
-                <GenExpenseContainer  text = {item.Expense}/>
-                </TouchableOpacity>
-               
-            )}
-            />
-            
-            </Animatable.View>
+           <View>
+               {this.conditionalLoading()}
+           </View>
         );
     }
 }
